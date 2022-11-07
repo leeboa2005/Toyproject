@@ -1,2 +1,2 @@
 # Toyproject
-team project 
+team project (Use vue, scss, three.js )
