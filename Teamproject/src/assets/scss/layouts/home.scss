@@ -1,0 +1,20 @@
+section.content {
+    position: relative;
+    height: 80vh;
+
+    div.title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    p {
+        font-size: 50px;
+    }
+
+    h1 {
+        margin: 30px 0;
+        text-align: center;
+    }
+}
