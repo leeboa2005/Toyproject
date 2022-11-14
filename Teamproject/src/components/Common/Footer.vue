@@ -10,7 +10,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '/src/assets/scss/common.scss';
+<style lang="scss">
 @import '/src/assets/scss/layouts/footer.scss';
 </style>

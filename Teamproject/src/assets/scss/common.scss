@@ -1,63 +1,174 @@
-/* 전체 */
+/* 공통 */
 @mixin set-color {
-    color:#232f3d;
+    color: #232f3d;
 }
 
-html,body {
-	height:100%;
+html,
+body {
+    height: 100%;
 }
 
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
+}
 
 div#warper {
-    position: relative;
-    width: 90%;
-    height:85vh;
+    min-height:100%;
     margin: 0 auto;
+}
 
-    h2{
+section.content {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+
+    h1 {
         position: absolute;
-        top:50%;
+        top: calc(50% - 80px);
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translateX(-50%);
     }
-    
-}  
+}
 
-body {
-	font-size:1.2rem;
-	font-family:'Rajdhani';
-}
-div,span,article,section,header,footer,p,ul,li,fieldset,legend,label,a,nav {
+div,
+span,
+article,
+section,
+header,
+footer,
+p,
+ul,
+li,
+fieldset,
+legend,
+label,
+a,
+nav {
     @include set-color;
-	box-sizing:border-box;
+    box-sizing: border-box;
 }
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
-	margin:0;
-	padding:0;
-	border:0;
-	box-sizing:border-box;
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
 }
-article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
-	display:block;
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
 }
-ol,ul {
-	list-style:none;
+
+ol,
+ul {
+    list-style: none;
 }
+
 table {
-	border-collapse:collapse;
-	border-spacing:0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
+
 a {
     @include set-color;
-	text-decoration:none;
+    text-decoration: none;
 }
-.clearfix::before,.clearfix::after {
-	content:"";
-	display:block;
-	clear: both
+
+.clearfix::before,
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
 }

@@ -2,7 +2,7 @@
 	<header class="header">
 		<h1><router-link to="/" class="logo"><img alt="Vue logo" src="../../assets/images/logo.png"></router-link></h1>
 		<div class="menuWrap">
-			<ul class="nav">
+			<ul class="nav clearfix">
                 <li><router-link to="/HaeNa">HaeNa</router-link></li>
 				<li><router-link to="/Mingue">Mingue</router-link></li>
 				<li><router-link to="/Boa">Boa</router-link></li>
@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lagn="scss" scoped>
+<style lagn="scss">
 @import '/src/assets/scss/common.scss';
 @import '/src/assets/scss/layouts/header.scss';
 

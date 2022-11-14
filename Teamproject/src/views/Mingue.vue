@@ -1,18 +1,15 @@
 <template>
-	<div id="warper">
-		<h2>Mingue Page</h2>
-	</div>
+		<section class="content">
+			<h1>Mingue Page</h1>
+		</section>
 </template>
 
 <script>
 export default {
-	
+
 }
 </script>
 
-<style lang="scss" scoped>
-@import '/src/assets/scss/common.scss';
-@import '/src/assets/scss/layouts/header.scss';
-@import '/src/assets/scss/layouts/footer.scss';
+<style lang="scss">
 
 </style>

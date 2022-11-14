@@ -3,8 +3,8 @@
     <Header />
     <Home />
     <router-view></router-view>
-    <Footer />
   </div>
+  <Footer />
 </template>
 
 <script>
@@ -20,6 +20,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '/src/assets/scss/common.scss';
+@import '/src/assets/scss/layouts/header.scss';
+@import '/src/assets/scss/layouts/footer.scss';
 </style>

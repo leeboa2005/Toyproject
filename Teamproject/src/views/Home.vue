@@ -1,12 +1,12 @@
 <template>
   <div id="warper">
     <section class="content">
-      <div class="title">
-        <p>👩‍💻🧑‍💻👩‍💻</p>
-        <h1>main page</h1>
-      </div>
+      <h1 class="title">
+        <span>👩‍💻🧑‍💻👩‍💻</span>
+        <p>main page</p>
+      </h1>
     </section>
-</div>
+  </div>
 </template>
 
 <script>
@@ -15,9 +15,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
-@import '/src/assets/scss/common.scss';
-@import '/src/assets/scss/layouts/header.scss';
-@import '/src/assets/scss/layouts/footer.scss';
+<style lang="scss">
 @import '/src/assets/scss/layouts/home.scss';
 </style>
