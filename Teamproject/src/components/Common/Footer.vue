@@ -1,12 +1,12 @@
 <template>
 	<footer class="footer">
-		<p>copyRight HaeNa, Mingue, Boa</p>
+		<p>copyRight Hannah, Mingyu, Boa</p>
 	</footer>
 </template>
 
 <script>
 export default {
-
+   name: 'comp-footer'
 }
 </script>
 

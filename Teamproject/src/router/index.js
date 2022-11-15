@@ -9,14 +9,14 @@ const router = createRouter({
         component: () => import('../views/Home')
       },
       {
-        path: '/HaeNa',
-        name: 'HaeNa',
-        component: () => import('../views/HaeNa')
+        path: '/Hannah',
+        name: 'Hannah',
+        component: () => import('../views/Hannah')
       },
       {
-        path: '/Mingue',
-        name: 'Mingue',
-        component: () => import('../views/Mingue')
+        path: '/Mingyu',
+        name: 'Mingyu',
+        component: () => import('../views/Mingyu')
       },
       {
         path: '/Boa',
