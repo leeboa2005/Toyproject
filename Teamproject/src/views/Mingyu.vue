@@ -1,6 +1,6 @@
 <template>
 		<section class="content">
-			<h1>Minguyu Page</h1>
+			<h1>Mingyu Page</h1>
 		</section>
 </template>
 
