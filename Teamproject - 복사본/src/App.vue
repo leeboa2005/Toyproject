@@ -1,15 +1,15 @@
 <template>
   <div id="wraper">
-    <Header/>
-    <Home/>
-    <router-view/>
+    <Header />
+    <Home />
+    <router-view></router-view>
   </div>
-  <Footer/>
+  <Footer />
 </template>
 
 <script>
-import Header from '@/common/Header'; 
-import Footer from '@/common/Footer';
+import Header from './components/Common/Header'; 
+import Footer from './components/Common/Footer';
 
 export default {
   name: 'App',
