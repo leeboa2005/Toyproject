@@ -1,2 +1,2 @@
 # Toyproject
-team project (Use vue, scss, three.js )
+Team Project by Boa, Hannah and Mingyu.
