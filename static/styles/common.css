@@ -24,8 +24,14 @@ header {
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddddddaa;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff20;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 nav ul {
@@ -36,17 +42,25 @@ nav ul {
 
 nav ul li a {
   font-size: 1.5rem;
+  color: #eeeeffee;
 }
 
 nav ul li a:hover {
-  color: #555;
+  color: #6699ff;
 }
 
 footer {
-  border-top: 1px solid #ddd;
+  width: 100%;
+  border-top: 1px solid #ddddddaa;
   text-align: center;
   padding: 15px 0;
   font-size: 1.4rem;
   font-weight: 300;
-  color: #444;
+  background-color: #ffffff20;
+  color: #eeeeffee;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }

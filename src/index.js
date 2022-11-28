@@ -1,172 +1,113 @@
 import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
 import { WEBGL } from './webgl'
 
 if (WEBGL.isWebGLAvailable()) {
-  var camera, scene, renderer
-  var plane
-  var mouse,
-    raycaster,
-    isShiftDown = false
+    var canvas
+    var loader, skybox
+    var scene, camera
+    var renderer
+    var controls
 
-  var rollOverMesh, rollOverMaterial
-  var cubeGeo, cubeMaterial
+    init_threejs()
+    
+    function init_threejs() {
+        canvas = document.getElementById("mCanvas")
+        // loader = new THREE.CubeTextureLoader()
+        // skybox = loader.load([
+        //     '../static/images/textures/skybox/space_ft.png',
+        //     '../static/images/textures/skybox/space_bk.png',
+        //     '../static/images/textures/skybox/space_up.png',
+        //     '../static/images/textures/skybox/space_dn.png',
+        //     '../static/images/textures/skybox/space_rt.png',
+        //     '../static/images/textures/skybox/space_lf.png'
+        // ])
+        scene = new THREE.Scene()
+        // scene.background = skybox
+        camera = new THREE.PerspectiveCamera(
+            80, window.innerWidth / window.innerHeight, 0.01, 10000
+        )
+        camera.position.set(20, 10, 20)
+        camera.lookAt(new THREE.Vector3(0, 0, 0))
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        controls = new OrbitControls(camera, renderer.domElement)
+        controls.minDistance = 25
+        controls.maxDistance = 50
 
-  var objects = []
+        const ambi_light = new THREE.AmbientLight(0xffffff, 0.8)
+        scene.add(ambi_light)
 
-  init()
-  render()
+        const bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            1.5,
+            0.4,
+            0.05
+        )
+        bloomPass.threshold = 0
+        bloomPass.strength = 1.25
+        bloomPass.radius = 0
+        const bloomComposer = new EffectComposer(renderer)
+        const renderScene = new RenderPass(scene, camera)
+        bloomComposer.setSize(window.innerWidth, window.innerHeight)
+        bloomComposer.renderToScreen = true
+        bloomComposer.addPass(renderScene)
+        bloomComposer.addPass(bloomPass)
 
-  function init() {
-    camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      1,
-      10000
-    )
-    camera.position.set(500, 800, 1300)
-    camera.lookAt(0, 0, 0)
-
-    scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xf0f0f0)
-
-    var rollOverGeo = new THREE.BoxBufferGeometry(50, 50, 50)
-    rollOverMaterial = new THREE.MeshBasicMaterial({
-      color: 0xff0000,
-      opacity: 0.5,
-      transparent: true,
-    })
-    rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial)
-    scene.add(rollOverMesh)
-
-    cubeGeo = new THREE.BoxBufferGeometry(50, 50, 50)
-    cubeMaterial = new THREE.MeshLambertMaterial({
-      color: 0xfeb74c
-    })
-
-    var gridHelper = new THREE.GridHelper(1000, 20)
-    scene.add(gridHelper)
-
-    raycaster = new THREE.Raycaster()
-    mouse = new THREE.Vector2()
-
-    var geometry = new THREE.PlaneBufferGeometry(1000, 1000)
-    geometry.rotateX(-Math.PI / 2)
-
-    plane = new THREE.Mesh(
-      geometry,
-      new THREE.MeshBasicMaterial({ visible: false })
-    )
-    scene.add(plane)
-
-    objects.push(plane)
-
-    var ambientLight = new THREE.AmbientLight(0x606060)
-    scene.add(ambientLight)
-
-    var directionalLight = new THREE.DirectionalLight(0xffffff)
-    directionalLight.position.set(1, 0.75, 0.5).normalize()
-    scene.add(directionalLight)
-
-    renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(window.innerWidth, window.innerHeight - 85)
-    document.body.querySelector("main").appendChild(renderer.domElement)
-
-    document.addEventListener('mousemove', onDocumentMouseMove, false)
-    document.addEventListener('mousedown', onDocumentMouseDown, false)
-    document.addEventListener('keydown', onDocumentKeyDown, false)
-    document.addEventListener('keyup', onDocumentKeyUp, false)
-    window.addEventListener('resize', onWindowResize, false)
-  }
-
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
-
-    renderer.setSize(window.innerWidth, window.innerHeight - 85)
-  }
-
-  function onDocumentMouseMove(event) {
-    event.preventDefault()
-
-    mouse.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
-    )
-
-    raycaster.setFromCamera(mouse, camera)
-
-    var intersects = raycaster.intersectObjects(objects)
-
-    if (intersects.length > 0) {
-      var intersect = intersects[0]
-
-      rollOverMesh.position.copy(intersect.point).add(intersect.face.normal)
-      rollOverMesh.position
-        .divideScalar(50)
-        .floor()
-        .multiplyScalar(50)
-        .addScalar(25)
-    }
-
-    render()
-  }
-
-  function onDocumentMouseDown(event) {
-    event.preventDefault()
-
-    mouse.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
-    )
-
-    raycaster.setFromCamera(mouse, camera)
-
-    var intersects = raycaster.intersectObjects(objects)
-
-    if (intersects.length > 0) {
-      var intersect = intersects[0]
-
-      if (isShiftDown) {
-        if (intersect.object !== plane) {
-          scene.remove(intersect.object)
-
-          objects.splice(objects.indexOf(intersect.object), 1)
+        const skybox_geo = new THREE.BoxGeometry(2048, 2048, 2048)
+        const loader = new THREE.TextureLoader()
+        const skyboxft = loader.load('../static/images/textures/skybox/space_ft.png'),
+              skyboxbk = loader.load('../static/images/textures/skybox/space_bk.png'),
+              skyboxup = loader.load('../static/images/textures/skybox/space_up.png'),
+              skyboxdn = loader.load('../static/images/textures/skybox/space_dn.png'),
+              skyboxrt = loader.load('../static/images/textures/skybox/space_rt.png'),
+              skyboxlf = loader.load('../static/images/textures/skybox/space_lf.png')
+        const skybox_mat_arr = [skyboxft, skyboxbk, skyboxup, skyboxdn, skyboxrt, skyboxlf]
+        const skybox_mats = []
+        for(let i = 0; i < skybox_mat_arr.length; i++) {
+            skybox_mats.push(
+                new THREE.MeshStandardMaterial({
+                    map: skybox_mat_arr[i]
+                })
+            )
         }
+        for(let i = 0; i < skybox_mats.length; i++) {
+            skybox_mats[i].side = THREE.BackSide
+        }
+        const skybox = new THREE.Mesh(skybox_geo, skybox_mats)
+        scene.add(skybox)
 
-      } else {
-        var voxel = new THREE.Mesh(cubeGeo, cubeMaterial)
-        voxel.position.copy(intersect.point).add(intersect.face.normal)
-        voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25)
-        scene.add(voxel)
+        const planet_geo = new THREE.SphereGeometry(12, 64, 64)
+        const planet_mat = new THREE.MeshLambertMaterial({
+            color: 0xaaccff,
+            emissivem: 0x6699ff
+        })
+        const planet = new THREE.Mesh(planet_geo, planet_mat)
+        scene.add(planet)
 
-        objects.push(voxel)
-      }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight
+            camera.updateProjectionMatrix()
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            bloomComposer.setSize(window.innerWidth, window.innerHeight)
+        }
+        window.addEventListener("resize", onWindowResize)
 
-      render()
+        function animate() {
+            requestAnimationFrame(animate)
+            skybox.rotation.x += 0.00015
+            skybox.rotation.y += 0.00015
+            camera.position.z += 0.0025
+            controls.update()
+            renderer.render(scene, camera)
+            bloomComposer.render()
+        }
+        animate()
     }
-  }
-
-  function onDocumentKeyDown(event) {
-    switch (event.keyCode) {
-      case 16:
-        isShiftDown = true
-        break
-    }
-  }
-
-  function onDocumentKeyUp(event) {
-    switch (event.keyCode) {
-      case 16:
-        isShiftDown = false
-        break
-    }
-  }
-
-  function render() {
-    renderer.render(scene, camera)
-  }
 } else {
-  var warning = WEBGL.getWebGLErrorMessage()
-  document.body.appendChild(warning)
+    var warning = WEBGL.getWebGLErrorMessage()
+    document.body.appendChild(warning)
 }
