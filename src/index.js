@@ -16,6 +16,7 @@ if (WEBGL.isWebGLAvailable()) {
     
     function init_threejs() {
         canvas = document.getElementById("mCanvas")
+        /* skybox texture apply on Scene */
         // loader = new THREE.CubeTextureLoader()
         // skybox = loader.load([
         //     '../static/images/textures/skybox/space_ft.png',
@@ -37,6 +38,7 @@ if (WEBGL.isWebGLAvailable()) {
         controls = new OrbitControls(camera, renderer.domElement)
         controls.minDistance = 25
         controls.maxDistance = 50
+        controls.enablePan = false
 
         const ambi_light = new THREE.AmbientLight(0xffffff, 0.8)
         scene.add(ambi_light)
@@ -47,9 +49,9 @@ if (WEBGL.isWebGLAvailable()) {
             0.4,
             0.05
         )
-        bloomPass.threshold = 0
-        bloomPass.strength = 1.25
-        bloomPass.radius = 0
+        bloomPass.threshold = 0.2
+        bloomPass.strength = 0.25
+        bloomPass.radius = 1
         const bloomComposer = new EffectComposer(renderer)
         const renderScene = new RenderPass(scene, camera)
         bloomComposer.setSize(window.innerWidth, window.innerHeight)
@@ -87,6 +89,23 @@ if (WEBGL.isWebGLAvailable()) {
         })
         const planet = new THREE.Mesh(planet_geo, planet_mat)
         scene.add(planet)
+
+        // add some particle (stars)
+        const particle_geo = new THREE.BufferGeometry
+        const particle_cnt = 150
+        const posArr = new Float32Array(particle_cnt * 3) // xyz xyz xyz xyz
+        for(let i = 0; i < particle_cnt * 3; i++) {
+            posArr[i] = (Math.random() - 0.5) * 100
+        }
+        particle_geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
+        const particle_mat = new THREE.PointsMaterial({
+            size: 0.1,
+            transparent: true,
+            color: 0xbbddff,
+            blending: THREE.AdditiveBlending
+        })
+        const particle_mesh = new THREE.Points(particle_geo, particle_mat)
+        scene.add(particle_mesh)
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight
