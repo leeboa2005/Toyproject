@@ -29,7 +29,7 @@ if (WEBGL.isWebGLAvailable()) {
         scene = new THREE.Scene()
         // scene.background = skybox
         camera = new THREE.PerspectiveCamera(
-            80, window.innerWidth / window.innerHeight, 0.01, 10000
+            80, window.innerWidth / window.innerHeight, 15, 10000
         )
         camera.position.set(20, 10, 20)
         camera.lookAt(new THREE.Vector3(0, 0, 0))
@@ -50,7 +50,7 @@ if (WEBGL.isWebGLAvailable()) {
             0.05
         )
         bloomPass.threshold = 0.2
-        bloomPass.strength = 0.25
+        bloomPass.strength = 0.6
         bloomPass.radius = 1
         const bloomComposer = new EffectComposer(renderer)
         const renderScene = new RenderPass(scene, camera)
@@ -82,24 +82,29 @@ if (WEBGL.isWebGLAvailable()) {
         const skybox = new THREE.Mesh(skybox_geo, skybox_mats)
         scene.add(skybox)
 
-        const planet_geo = new THREE.SphereGeometry(12, 64, 64)
+        const planet_geo = new THREE.SphereGeometry(12, 32, 32)
+        const planet_tex = loader.load('../static/images/textures/planet/4096_orbobjEpsilonEri2.jpg')
         const planet_mat = new THREE.MeshLambertMaterial({
+            map: planet_tex,
             color: 0xaaccff,
-            emissivem: 0x6699ff
+            emissivem: 0x6699ff,
+            wireframe: true
         })
         const planet = new THREE.Mesh(planet_geo, planet_mat)
         scene.add(planet)
 
         // add some particle (stars)
         const particle_geo = new THREE.BufferGeometry
-        const particle_cnt = 150
+        const particle_cnt = 5000
         const posArr = new Float32Array(particle_cnt * 3) // xyz xyz xyz xyz
         for(let i = 0; i < particle_cnt * 3; i++) {
             posArr[i] = (Math.random() - 0.5) * 100
         }
         particle_geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
+        const star_texture = loader.load('../static/images/textures/particle/star.png')
         const particle_mat = new THREE.PointsMaterial({
-            size: 0.1,
+            map: star_texture,
+            size: 0.75,
             transparent: true,
             color: 0xbbddff,
             blending: THREE.AdditiveBlending
@@ -120,6 +125,7 @@ if (WEBGL.isWebGLAvailable()) {
             skybox.rotation.x += 0.00015
             skybox.rotation.y += 0.00015
             camera.position.z += 0.0025
+            particle_mesh.rotation.y += 0.00015
             controls.update()
             renderer.render(scene, camera)
             bloomComposer.render()
