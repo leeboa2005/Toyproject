@@ -4,13 +4,16 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
 import { WEBGL } from './webgl'
+import { Color } from 'three'
 
 if (WEBGL.isWebGLAvailable()) {
     var canvas
-    var loader, skybox
     var scene, camera
     var renderer
     var controls
+
+    var cam_width_devide_value = 120
+    var cam_height_devide_value = 300
 
     init_threejs()
     
@@ -29,16 +32,17 @@ if (WEBGL.isWebGLAvailable()) {
         scene = new THREE.Scene()
         // scene.background = skybox
         camera = new THREE.PerspectiveCamera(
-            80, window.innerWidth / window.innerHeight, 15, 10000
+            75, window.innerWidth / window.innerHeight, 0.01, 10000
         )
-        camera.position.set(20, 10, 20)
-        camera.lookAt(new THREE.Vector3(0, 0, 0))
+        camera.position.set(0, 0, 28)
+        camera.lookAt(window.innerWidth / cam_width_devide_value, window.innerHeight / cam_height_devide_value, 0)
+        // camera.lookAt(new THREE.Vector3(0, 0, 0))
         renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
         renderer.setSize(window.innerWidth, window.innerHeight)
-        controls = new OrbitControls(camera, renderer.domElement)
-        controls.minDistance = 25
-        controls.maxDistance = 50
-        controls.enablePan = false
+        // controls = new OrbitControls(camera, renderer.domElement)
+        // controls.minDistance = 25
+        // controls.maxDistance = 50
+        // controls.enablePan = false
 
         const ambi_light = new THREE.AmbientLight(0xffffff, 0.8)
         scene.add(ambi_light)
@@ -88,31 +92,59 @@ if (WEBGL.isWebGLAvailable()) {
             map: planet_tex,
             color: 0xaaccff,
             emissivem: 0x6699ff,
-            wireframe: true
+            // wireframe: true
         })
         const planet = new THREE.Mesh(planet_geo, planet_mat)
         scene.add(planet)
 
         // add some particle (stars)
-        const particle_geo = new THREE.BufferGeometry
-        const particle_cnt = 5000
-        const posArr = new Float32Array(particle_cnt * 3) // xyz xyz xyz xyz
-        for(let i = 0; i < particle_cnt * 3; i++) {
-            posArr[i] = (Math.random() - 0.5) * 100
-        }
-        particle_geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
+        // const particle_geo = new THREE.BufferGeometry
+        // const particle_cnt = 5000
+        // const posArr = new Float32Array(particle_cnt * 3) // xyz xyz xyz xyz
+        // for(let i = 0; i < particle_cnt * 3; i++) {
+        //     posArr[i] = (Math.random() - 0.5) * (Math.random() + 0.5) * 20
+        // }
+        // particle_geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
         const star_texture = loader.load('../static/images/textures/particle/star.png')
-        const particle_mat = new THREE.PointsMaterial({
+        // const particle_mat = new THREE.PointsMaterial({
+        //     map: star_texture,
+        //     size: 0.75,
+        //     transparent: true,
+        //     color: 0xbbddff,
+        //     blending: THREE.AdditiveBlending
+        // })
+        // const particle_mesh = new THREE.Points(particle_geo, particle_mat)
+        // scene.add(particle_mesh)
+        var distance = 33
+        var count = 3333
+        var geometry = new THREE.Geometry()
+
+        for (var i = 0; i < count; i++) {
+            var vertex = new THREE.Vector3(0, 0, 0)
+
+            var theta = THREE.Math.randFloatSpread(360)
+            var phi = THREE.Math.randFloatSpread(360)
+
+            vertex.x = distance * Math.sin(theta) * Math.cos(phi)
+            vertex.y = distance * Math.sin(theta) * Math.sin(phi)
+            vertex.z = distance * Math.cos(theta)
+
+            geometry.vertices.push(vertex)
+        }
+        var particles = new THREE.PointCloud(geometry, new THREE.PointCloudMaterial({
             map: star_texture,
-            size: 0.75,
+            color: 0x91968d,
+            size: 2.5,
+            sizeAttenuation: true,
+            alphaTest: 0.75,
             transparent: true,
-            color: 0xbbddff,
             blending: THREE.AdditiveBlending
-        })
-        const particle_mesh = new THREE.Points(particle_geo, particle_mat)
-        scene.add(particle_mesh)
+        }));
+        particles.boundingSphere = 50
+        scene.add(particles);
 
         function onWindowResize() {
+            camera.lookAt(window.innerWidth / cam_width_devide_value, window.innerHeight / cam_height_devide_value, 0)
             camera.aspect = window.innerWidth / window.innerHeight
             camera.updateProjectionMatrix()
             renderer.setSize(window.innerWidth, window.innerHeight)
@@ -122,11 +154,13 @@ if (WEBGL.isWebGLAvailable()) {
 
         function animate() {
             requestAnimationFrame(animate)
-            skybox.rotation.x += 0.00015
-            skybox.rotation.y += 0.00015
-            camera.position.z += 0.0025
-            particle_mesh.rotation.y += 0.00015
-            controls.update()
+            skybox.rotation.x += 0.00025
+            skybox.rotation.y += 0.00025
+            // particle_mesh.rotation.y -= 0.0003
+            particles.rotation.y -= 0.0003
+            planet.rotation.y += 0.0005
+            planet.rotation.x -= 0.0007
+            // controls.update()
             renderer.render(scene, camera)
             bloomComposer.render()
         }
