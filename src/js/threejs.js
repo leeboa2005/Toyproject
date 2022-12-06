@@ -47,6 +47,12 @@ if (WEBGL.isWebGLAvailable()) {
         const ambi_light = new THREE.AmbientLight(0xffffff, 0.8)
         scene.add(ambi_light)
 
+        const point_light = new THREE.PointLight(0xeeeeff, 1)
+        const point_light_guide = new THREE.PointLightHelper(point_light, 1, 0x1111ff)
+        point_light.position.set(5, -3, 15)
+        scene.add(point_light)
+        // scene.add(point_light_guide)
+
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(window.innerWidth, window.innerHeight),
             1.5,
@@ -60,8 +66,8 @@ if (WEBGL.isWebGLAvailable()) {
         const renderScene = new RenderPass(scene, camera)
         bloomComposer.setSize(window.innerWidth, window.innerHeight)
         bloomComposer.renderToScreen = true
-        bloomComposer.addPass(renderScene)
-        bloomComposer.addPass(bloomPass)
+        // bloomComposer.addPass(renderScene)
+        // bloomComposer.addPass(bloomPass)
 
         const skybox_geo = new THREE.BoxGeometry(2048, 2048, 2048)
         const loader = new THREE.TextureLoader()
@@ -86,13 +92,14 @@ if (WEBGL.isWebGLAvailable()) {
         const skybox = new THREE.Mesh(skybox_geo, skybox_mats)
         scene.add(skybox)
 
-        const planet_geo = new THREE.SphereGeometry(12, 32, 32)
+        const planet_geo = new THREE.SphereGeometry(10, 128, 128)
         const planet_tex = loader.load('../static/images/textures/planet/4096_orbobjEpsilonEri2.jpg')
-        const planet_mat = new THREE.MeshLambertMaterial({
+        const planet_nrm = loader.load('../static/images/textures/planet/planet_normalmap.jpg')
+        const planet_mat = new THREE.MeshStandardMaterial({
             map: planet_tex,
             color: 0xaaccff,
-            emissivem: 0x6699ff,
-            // wireframe: true
+            fog: true,
+            normalMap: planet_nrm
         })
         const planet = new THREE.Mesh(planet_geo, planet_mat)
         scene.add(planet)
@@ -116,7 +123,8 @@ if (WEBGL.isWebGLAvailable()) {
         // const particle_mesh = new THREE.Points(particle_geo, particle_mat)
         // scene.add(particle_mesh)
         var distance = 33
-        var count = 3333
+        var count_value = (Math.random() * (1999 - 1333)) + 1333
+        var count = count_value
         var geometry = new THREE.Geometry()
 
         for (var i = 0; i < count; i++) {
