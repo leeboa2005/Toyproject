@@ -1,10 +1,11 @@
+// three js
 import * as THREE from 'three'
+import { Color } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
 import { WEBGL } from './webgl'
-import { Color } from 'three'
 
 if (WEBGL.isWebGLAvailable()) {
     var canvas
@@ -18,16 +19,16 @@ if (WEBGL.isWebGLAvailable()) {
     init_threejs()
     
     function init_threejs() {
-        canvas = document.getElementById("mCanvas")
+        canvas = document.getElementById("spacePlanet")
         /* skybox texture apply on Scene */
         // loader = new THREE.CubeTextureLoader()
         // skybox = loader.load([
-        //     '../static/images/textures/skybox/space_ft.png',
-        //     '../static/images/textures/skybox/space_bk.png',
-        //     '../static/images/textures/skybox/space_up.png',
-        //     '../static/images/textures/skybox/space_dn.png',
-        //     '../static/images/textures/skybox/space_rt.png',
-        //     '../static/images/textures/skybox/space_lf.png'
+        //     '../static/images/texture/skybox/space_ft.png',
+        //     '../static/images/texture/skybox/space_bk.png',
+        //     '../static/images/texture/skybox/space_up.png',
+        //     '../static/images/texture/skybox/space_dn.png',
+        //     '../static/images/texture/skybox/space_rt.png',
+        //     '../static/images/texture/skybox/space_lf.png'
         // ])
         scene = new THREE.Scene()
         // scene.background = skybox
@@ -71,12 +72,12 @@ if (WEBGL.isWebGLAvailable()) {
 
         const skybox_geo = new THREE.BoxGeometry(2048, 2048, 2048)
         const loader = new THREE.TextureLoader()
-        const skyboxft = loader.load('../static/images/textures/skybox/space_ft.png'),
-              skyboxbk = loader.load('../static/images/textures/skybox/space_bk.png'),
-              skyboxup = loader.load('../static/images/textures/skybox/space_up.png'),
-              skyboxdn = loader.load('../static/images/textures/skybox/space_dn.png'),
-              skyboxrt = loader.load('../static/images/textures/skybox/space_rt.png'),
-              skyboxlf = loader.load('../static/images/textures/skybox/space_lf.png')
+        const skyboxft = loader.load('../static/images/texture/skybox/space_ft.png'),
+              skyboxbk = loader.load('../static/images/texture/skybox/space_bk.png'),
+              skyboxup = loader.load('../static/images/texture/skybox/space_up.png'),
+              skyboxdn = loader.load('../static/images/texture/skybox/space_dn.png'),
+              skyboxrt = loader.load('../static/images/texture/skybox/space_rt.png'),
+              skyboxlf = loader.load('../static/images/texture/skybox/space_lf.png')
         const skybox_mat_arr = [skyboxft, skyboxbk, skyboxup, skyboxdn, skyboxrt, skyboxlf]
         const skybox_mats = []
         for(let i = 0; i < skybox_mat_arr.length; i++) {
@@ -93,8 +94,8 @@ if (WEBGL.isWebGLAvailable()) {
         scene.add(skybox)
 
         const planet_geo = new THREE.SphereGeometry(10, 128, 128)
-        const planet_tex = loader.load('../static/images/textures/planet/4096_orbobjEpsilonEri2.jpg')
-        const planet_nrm = loader.load('../static/images/textures/planet/planet_normalmap.jpg')
+        const planet_tex = loader.load('../static/images/texture/planet/4096_orbobjEpsilonEri2.jpg')
+        const planet_nrm = loader.load('../static/images/texture/planet/planet_normalmap.jpg')
         const planet_mat = new THREE.MeshStandardMaterial({
             map: planet_tex,
             color: 0xaaccff,
@@ -104,24 +105,7 @@ if (WEBGL.isWebGLAvailable()) {
         const planet = new THREE.Mesh(planet_geo, planet_mat)
         scene.add(planet)
 
-        // add some particle (stars)
-        // const particle_geo = new THREE.BufferGeometry
-        // const particle_cnt = 5000
-        // const posArr = new Float32Array(particle_cnt * 3) // xyz xyz xyz xyz
-        // for(let i = 0; i < particle_cnt * 3; i++) {
-        //     posArr[i] = (Math.random() - 0.5) * (Math.random() + 0.5) * 20
-        // }
-        // particle_geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
-        const star_texture = loader.load('../static/images/textures/particle/star.png')
-        // const particle_mat = new THREE.PointsMaterial({
-        //     map: star_texture,
-        //     size: 0.75,
-        //     transparent: true,
-        //     color: 0xbbddff,
-        //     blending: THREE.AdditiveBlending
-        // })
-        // const particle_mesh = new THREE.Points(particle_geo, particle_mat)
-        // scene.add(particle_mesh)
+        const star_texture = loader.load('../static/images/texture/particle/star.png')
         var distance = 33
         var count_value = (Math.random() * (1999 - 1333)) + 1333
         var count = count_value
@@ -164,11 +148,9 @@ if (WEBGL.isWebGLAvailable()) {
             requestAnimationFrame(animate)
             skybox.rotation.x += 0.00025
             skybox.rotation.y += 0.00025
-            // particle_mesh.rotation.y -= 0.0003
             particles.rotation.y -= 0.0003
             planet.rotation.y += 0.0005
             planet.rotation.x -= 0.0007
-            // controls.update()
             renderer.render(scene, camera)
             bloomComposer.render()
         }
@@ -178,3 +160,11 @@ if (WEBGL.isWebGLAvailable()) {
     var warning = WEBGL.getWebGLErrorMessage()
     document.body.appendChild(warning)
 }
+
+// three js end
+
+// gsap
+
+
+
+// gsap end

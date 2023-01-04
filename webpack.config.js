@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/js/index.js',
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   performance: {
     maxEntrypointSize: 1024000,
@@ -15,6 +15,18 @@ module.exports = {
     publicPath: '/public/',
     compress: true,
     port: 9000,
-    hot: true,
+    hot: true
   },
+  module: {
+    rules: [
+     {
+      test: /\.(sa|sc|c)ss$/,
+      use: [
+       'style-loader',
+       'css-loader',
+       'sass-loader',
+      ],
+     }
+    ]
+  }
 }
