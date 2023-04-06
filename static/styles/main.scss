@@ -4,10 +4,20 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden;
+    background: #000;
+}
+
+@keyframes fadeout {
+    0% {opacity: 1}
+    100% {opacity: 0}
 }
 
 header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 500;
+
     .hamburger-button-box {
         width: auto;
         height: auto;
@@ -72,6 +82,28 @@ header {
                     }
                 }
             }
+        }
+    }
+}
+
+main {
+    copy {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+        text-align: center;
+
+        h1 {
+            width: 100%;
+            font-size: 72px;
+            color: white;
+            opacity: 0;
+            position: absolute;
+            top: 39%;
         }
     }
 }
