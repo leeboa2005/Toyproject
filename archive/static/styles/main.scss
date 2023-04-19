@@ -1,0 +1,109 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #000;
+}
+
+@keyframes fadeout {
+    0% {opacity: 1}
+    100% {opacity: 0}
+}
+
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 500;
+
+    .hamburger-button-box {
+        width: auto;
+        height: auto;
+        padding: 15px;
+        background-color: #ffffff20;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border-bottom-right-radius: 15px;
+        border-right: 1px solid #ddddddaa;
+        border-bottom: 1px solid #ddddddaa;
+
+        display: flex;
+        justify-content: flex-start;
+        position: relative;
+        left: calc(-100% + 20px + 30px);
+        transition: left 500ms ease;
+
+        .hamburger-button {
+            &:hover {cursor: pointer}
+            width: 20px;
+            height: 14px;
+            position: relative;
+            margin-left: 15px;
+
+            span.hamburger-line {
+                display: block;
+                width: 100%;
+                height: 1px;
+                border-radius: 20%;
+                background-color: var(--white);
+                position: absolute;
+                left: 0;
+                transition: all 300ms ease-in-out;
+
+                &:nth-child(1) {
+                    top: 0;
+                }
+                &:nth-child(2) {
+                    top: 48%;
+                }
+                &:nth-child(3) {
+                    bottom: 0;
+                }
+            }
+        }
+
+        &.active {
+            left: 0;
+            .hamburger-button {
+                span.hamburger-line {
+                    &:nth-child(1) {
+                        top: 48%;
+                        transform: rotate(-45deg);
+                    }
+                    &:nth-child(2) {
+                        width: 0%;
+                        left: 50%;
+                    }
+                    &:nth-child(3) {
+                        bottom: 48%;
+                        transform: rotate(45deg);
+                    }
+                }
+            }
+        }
+    }
+}
+
+main {
+    copy {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+        text-align: center;
+
+        h1 {
+            width: 100%;
+            font-size: 72px;
+            color: white;
+            opacity: 0;
+            position: absolute;
+            top: 39%;
+        }
+    }
+}
