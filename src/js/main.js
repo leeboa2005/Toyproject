@@ -35,3 +35,28 @@ $navbtn.addEventListener('click', () => {
 	}
 });
 // nav button end
+
+// gsap
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger);
+
+const hero_content = document.querySelector('.section-hero .hero-content')
+const hero_headline = hero_content.querySelector('h1')
+
+let hero_headline_move = gsap.timeline({
+	scrollTrigger: {
+		trigger: '.section-hero',
+		start: 'top top',
+		end: '+=5000',
+		scrub: 0,
+		pin: true
+	}
+})
+hero_headline_move.to(hero_headline, {
+	fontSize: '78vh'
+}, 0).to(hero_headline, {
+	scale: 25
+}, 0.1)
+// gsap end
