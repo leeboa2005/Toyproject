@@ -9,6 +9,16 @@ var observerOptions = {
 };
 // d.o.o end
 
+// video auto play
+const videos = document.querySelectorAll("video[auto_play]")
+videos.forEach(video => {
+	setTimeout(() => {
+		video.play()
+		video.controls = false
+	}, 100)
+})
+// video auto play end
+
 // nav button
 const $navbtn = document.getElementById('navbutton');
 const $nav = document.querySelector('nav');
